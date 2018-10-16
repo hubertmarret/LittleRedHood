@@ -43,6 +43,6 @@ public class RessourcePickup : MonoBehaviour {
     public void PickupRessource(GameObject _ressource)
     {
         Destroy(_ressource);
-        lanternLightManager.currentLight = Mathf.Max(lanternLightManager.lightMax, lanternLightManager.currentLight + ressourceValue);
+        lanternLightManager.currentLight = Mathf.Min(lanternLightManager.lightMax, lanternLightManager.currentLight + ressourceValue);
     }
 }
