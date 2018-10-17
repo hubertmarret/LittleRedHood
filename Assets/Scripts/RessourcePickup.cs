@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class RessourcePickup : MonoBehaviour {
 
     public LanternLightManager lanternLightManager;
-    public float ressourceValue = 5f;
+    public float ressourceValue = 10f;
 
     public Camera mainCamera;
 
@@ -43,6 +43,6 @@ public class RessourcePickup : MonoBehaviour {
     public void PickupRessource(GameObject _ressource)
     {
         Destroy(_ressource);
-        lanternLightManager.currentLight = Mathf.Min(lanternLightManager.lightMax, lanternLightManager.currentLight + ressourceValue);
+        lanternLightManager.targetedLight = Mathf.Min(lanternLightManager.lightMax, lanternLightManager.targetedLight + ressourceValue);
     }
 }
