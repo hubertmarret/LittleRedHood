@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    public float mouvementSpeed = 20;
+    public float mouvementSpeed = 5;
     public float rotationSpeed = 10;
     public GameObject playerCamera;
 
