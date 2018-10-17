@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
     public float rotationSpeed = 10;
     public GameObject playerCamera;
 
-    private bool walking;
+    public bool walking;
     private Animator animator;
 
     private int frameCount;

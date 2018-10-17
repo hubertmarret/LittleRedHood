@@ -11,6 +11,7 @@ public class LanternLightManager : MonoBehaviour {
     public float targetedLight;
     public new Light light;
 
+
 	// Use this for initialization
 	void Start () {
         if (light == null)
@@ -33,6 +34,13 @@ public class LanternLightManager : MonoBehaviour {
         }
         
         light.range = currentLight;
+
+        // check if light fade away, display the game over panel
+        if(light.range <= 1)
+        {
+            Debug.Log("light off");
+            GameManager.instance.GameOverPanel.SetActive(true);
+        }
 	}
 
     // return the radius needed to reduce the sphere volume by a linear amount
