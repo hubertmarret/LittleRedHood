@@ -13,7 +13,10 @@ public class LanternLightManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        light = GetComponent<Light>();
+        if (light == null)
+        {
+            Debug.Log("Please reference the gameobject that holds the lantern light.");
+        }
         currentLight = lightMax;
 	}
 	
