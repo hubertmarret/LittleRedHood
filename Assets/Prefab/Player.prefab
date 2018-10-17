@@ -2605,7 +2605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouvementSpeed: 5
-  rotationSpeed: 10
+  rotationSpeed: 8
   playerCamera: {fileID: 1715996807741700}
 --- !u!114 &114689934093443324
 MonoBehaviour:
