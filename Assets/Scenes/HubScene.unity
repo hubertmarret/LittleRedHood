@@ -1577,6 +1577,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1510521362 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1480441294221416, guid: 9ecd27a964d8b5447a96438777bac097,
+    type: 2}
+  m_PrefabInternal: {fileID: 1370373146}
 --- !u!224 &1510521363 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224948221038555524, guid: 9ecd27a964d8b5447a96438777bac097,
@@ -1672,6 +1677,24 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 54962924251368300, guid: 62b9ea3bb9091b84ab39dbd749fae83d,
     type: 2}
   m_PrefabInternal: {fileID: 393022940}
+--- !u!1 &1578385102 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1792132926080208, guid: 62b9ea3bb9091b84ab39dbd749fae83d,
+    type: 2}
+  m_PrefabInternal: {fileID: 393022940}
+--- !u!114 &1578385103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1578385102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dacc91ff33d10564eb5e239d1f26ece3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exitMenuPanel: {fileID: 1627363644}
+  gameOverPanel: {fileID: 1510521362}
 --- !u!1 &1596134205
 GameObject:
   m_ObjectHideFlags: 0
@@ -1757,6 +1780,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1596134205}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1627363644 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1544480487670912, guid: af8ef480ba3223d4490bbdb4a4731356,
+    type: 2}
+  m_PrefabInternal: {fileID: 250533703}
 --- !u!224 &1627363645 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224847962668981044, guid: af8ef480ba3223d4490bbdb4a4731356,

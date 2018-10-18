@@ -44,10 +44,6 @@ public class LanternLightManager : MonoBehaviour {
     public void RefillLight(float ressourceValue)
     {
         targetedLight = Mathf.Min(lightMax, targetedLight + ressourceValue);
-        if(100 * (targetedLight / lightMax) > lightPercentToSpawn)
-        {
-            spawnOrbPossible = true;
-        }
     }
 
     // Update is called once per frame
@@ -63,5 +59,15 @@ public class LanternLightManager : MonoBehaviour {
         }
         
         light.range = currentLight;
-	}
+
+        if(!spawnOrbPossible && GetLightPowerPercent() > lightPercentToSpawn)
+        {
+            spawnOrbPossible = true;
+        }
+
+        if(currentLight < 1)
+        {
+            UIManager.instance.gameOverPanel.SetActive(!UIManager.instance.gameOverPanel.activeInHierarchy);
+        }
+    }
 }
