@@ -11,6 +11,7 @@ public class LanternLightManager : MonoBehaviour {
     public float targetedLight;
     public new Light light;
 
+    private bool lightON;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +20,9 @@ public class LanternLightManager : MonoBehaviour {
             Debug.Log("Please reference the gameobject that holds the lantern light.");
         }
         currentLight = lightMax;
-	}
+
+        lightON = true;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -36,10 +39,13 @@ public class LanternLightManager : MonoBehaviour {
         light.range = currentLight;
 
         // check if light fade away, display the game over panel
-        if(light.range <= 1)
+        if(lightON && light.range <= 1)
         {
             Debug.Log("light off");
-            GameManager.instance.GameOverPanel.SetActive(true);
+
+            UIManager.instance.gameOverPanel.SetActive(!UIManager.instance.gameOverPanel.activeInHierarchy);
+
+            lightON = false;
         }
 	}
 

@@ -10,7 +10,6 @@ public class RessourcePickup : MonoBehaviour {
 
     public Camera mainCamera;
 
-	// Use this for initialization
 	void Start () {
 		if (lanternLightManager == null)
         {
@@ -21,22 +20,12 @@ public class RessourcePickup : MonoBehaviour {
             Debug.Log("No camera found. Please tag your camera as mainCamera or set a camera for this script in the editor");
         }
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetMouseButton(0))
-        {
-            Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit[] _results = Physics.RaycastAll(_ray);
 
-            foreach(RaycastHit _result in _results)
-            {
-                if (_result.transform.gameObject.CompareTag("LanternRessource"))
-                {
-                    PickupRessource(_result.transform.gameObject);
-                    return;
-                }
-            }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("LanternRessource"))
+        {
+            PickupRessource(other.gameObject);
         }
     }
 
