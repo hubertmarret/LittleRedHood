@@ -31,11 +31,20 @@ public class PlayerAudio : MonoBehaviour {
 		if (player.walking == true && playerAudio.isPlaying == false)
         {
             playerAudio.clip = walkingSound;
+            playerAudio.volume = 0.2f;
             playerAudio.Play();
         } 
+        if (player.walking == true && playerAudio.isPlaying == true)
+        {
+            playerAudio.volume = Mathf.Min(playerAudio.volume + Time.deltaTime, 0.5f);
+        }
         if (player.walking == false && playerAudio.isPlaying == true)
         {
-            playerAudio.Pause();
+            playerAudio.volume = Mathf.Max(playerAudio.volume - Time.deltaTime * 1.5f, 0.0f);
+            if (playerAudio.volume <= 0.0f)
+            {
+                playerAudio.Pause();
+            }
         }
 
         foreach(AudioSource audioSource in audioSources)
