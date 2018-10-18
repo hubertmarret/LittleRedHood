@@ -81,15 +81,28 @@ public class Player : MonoBehaviour {
 
         if (Input.GetKeyUp("z") || Input.GetKeyUp("q") || Input.GetKeyUp("s") || Input.GetKeyUp("d"))
         {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
             walking = false;
             animator.SetBool("Walk", false);
         }
+    }
+
+    public void WalkTo(GameObject target)
+    {
+        Vector3 playerToTarget = target.transform.position - transform.position;
+        transform.Translate(playerToTarget);
+        walking = true;
+        animator.SetBool("Walk", true);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("LanternRessource"))
         {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.Sleep();
             walking = false;
             animator.SetBool("Walk", false);
             animator.SetTrigger("PickingRessources");
@@ -99,7 +112,8 @@ public class Player : MonoBehaviour {
 
     public void PickupRessource(GameObject _ressource)
     {
-        Destroy(_ressource);
+        Destroy(_ressource.gameObject.GetComponent<Collider>());
+        Destroy(_ressource, 2);
         lanternLightManager.RefillLight(ressourceValue);
     }
 
