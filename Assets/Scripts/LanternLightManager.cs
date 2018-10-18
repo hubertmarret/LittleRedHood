@@ -65,9 +65,9 @@ public class LanternLightManager : MonoBehaviour {
             spawnOrbPossible = true;
         }
 
-        if(currentLight < 1)
-        {
-            UIManager.instance.gameOverPanel.SetActive(!UIManager.instance.gameOverPanel.activeInHierarchy);
-        }
+        //if(currentLight < 1)
+        //{
+        //    UIManager.instance.gameOverPanel.SetActive(!UIManager.instance.gameOverPanel.activeInHierarchy);
+        //}
     }
 }
