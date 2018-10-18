@@ -15,8 +15,8 @@ public class RessourceSpawner : MonoBehaviour {
 	void Update () {
 		if(Input.GetKeyUp("space"))
         {
-            float x = Random.Range(-30.0f, 30.0f);
-            float z = Random.Range(-15.0f, 30.0f);
+            float x = Random.Range(-20.0f, 20.0f);
+            float z = Random.Range(-10.0f, 20.0f);
             GameObject orb = Instantiate(orbPrefab);
             orb.transform.position = new Vector3(x, orb.transform.position.y, z);
         }

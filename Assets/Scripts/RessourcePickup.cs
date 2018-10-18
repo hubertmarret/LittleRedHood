@@ -10,6 +10,7 @@ public class RessourcePickup : MonoBehaviour {
 
     public Camera mainCamera;
 
+	// Use this for initialization
 	void Start () {
 		if (lanternLightManager == null)
         {
@@ -21,17 +22,6 @@ public class RessourcePickup : MonoBehaviour {
         }
 	}
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("LanternRessource"))
-        {
-            PickupRessource(other.gameObject);
-        }
-    }
 
-    public void PickupRessource(GameObject _ressource)
-    {
-        Destroy(_ressource);
-        lanternLightManager.targetedLight = Mathf.Min(lanternLightManager.lightMax, lanternLightManager.targetedLight + ressourceValue);
-    }
+    
 }

@@ -4,23 +4,35 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    // mouvement
     public float mouvementSpeed = 5;
     public float rotationSpeed = 10;
     public GameObject playerCamera;
+    private Rigidbody rb;
 
+    // animation
     public bool walking;
     private Animator animator;
-
     private int frameCount;
 
+    // ressource pickup
+    public float ressourceValue = 10f;
+    private LanternLightManager lanternLightManager;
+
+    // START
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+
         frameCount = 0;
 
         walking = false;
         animator = GetComponentInChildren<Animator>();
+
+        lanternLightManager = GetComponentInChildren<LanternLightManager>();
     }
 
+    //OTHER METHODS
     void Move()
     {
         if (Input.GetKey("z") || Input.GetKey("q") || Input.GetKey("s") || Input.GetKey("d"))
@@ -60,7 +72,8 @@ public class Player : MonoBehaviour {
             playerCamera.transform.position = worldCamPosition;
             playerCamera.transform.rotation = worldCamRotation;
 
-            transform.position += vecCam * mouvementSpeed * Time.deltaTime;
+            //transform.position += vecCam * mouvementSpeed * Time.deltaTime;
+            rb.velocity = vecCam * mouvementSpeed;
 
             walking = true;
         }
@@ -72,10 +85,32 @@ public class Player : MonoBehaviour {
         }
     }
 
-	void Update () {
-        
-        Move();
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("LanternRessource"))
+        {
+            gameObject.GetComponentInParent<Animator>().SetTrigger("PickingRessources");
+            PickupRessource(other.gameObject);
+        }
+    }
 
+    public void PickupRessource(GameObject _ressource)
+    {
+        Destroy(_ressource);
+        lanternLightManager.targetedLight = Mathf.Min(lanternLightManager.lightMax, lanternLightManager.targetedLight + ressourceValue);
+    }
+
+
+    // UPDATE
+    void Update () {
+
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("PickFire"))
+        {
+            Move();
+        }
+
+        // Move();
+        
         if (walking) {
             animator.SetBool("Walk", true);
         }
