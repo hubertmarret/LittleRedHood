@@ -15,6 +15,8 @@ public class LanternLightManager : MonoBehaviour {
 
     private float targetedLight;
 
+    private bool lightFading;
+
     // Use this for initialization
     void Start () {
         if (light == null)
@@ -24,6 +26,7 @@ public class LanternLightManager : MonoBehaviour {
         currentLight = lightMax;
 
         spawnOrbPossible = true;
+        lightFading = true;
     }
 
     // return the radius needed to reduce the sphere volume by a linear amount
@@ -46,8 +49,8 @@ public class LanternLightManager : MonoBehaviour {
         targetedLight = Mathf.Min(lightMax, targetedLight + ressourceValue);
     }
 
-    // Update is called once per frame
-    void Update () {
+    private void ChangeLightPower()
+    {
         if (targetedLight > currentLight)
         {
             currentLight = Mathf.Min(targetedLight, currentLight + lightExpandFactor * Time.deltaTime);
@@ -57,17 +60,26 @@ public class LanternLightManager : MonoBehaviour {
             currentLight = Mathf.Max(0f, currentLight - lightShrinkFactor * Time.deltaTime * currentLight / lightMax);
             targetedLight = currentLight;
         }
-        
-        light.range = currentLight;
 
+        light.range = currentLight;
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if(lightFading)
+        {
+            ChangeLightPower();
+        }
+        
         if(!spawnOrbPossible && GetLightPowerPercent() > lightPercentToSpawn)
         {
             spawnOrbPossible = true;
         }
 
-        //if(currentLight < 1)
-        //{
-        //    UIManager.instance.gameOverPanel.SetActive(!UIManager.instance.gameOverPanel.activeInHierarchy);
-        //}
+        if (lightFading && currentLight < 1)
+        {
+            UIManager.instance.gameOverPanel.SetActive(!UIManager.instance.gameOverPanel.activeInHierarchy);
+            lightFading = false;
+        }
     }
 }
