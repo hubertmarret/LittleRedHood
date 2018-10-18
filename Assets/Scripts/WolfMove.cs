@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class WolfMove : MonoBehaviour {
 
-    public float wanderingSpeed = 5f;
-    public float runningSpeed = 10f;
+    public float wanderingSpeed = 4f;
+    public float runningSpeed = 7f;
     private Vector3 targetPosition;
 
     public bool seePlayer = false;
@@ -14,18 +14,26 @@ public class WolfMove : MonoBehaviour {
     public float blindMoveTime = 10.0f;
     private float curBlindMoveTime;
 
+    public Animator animator;
     public WolfCam wolfCam;
     private Rigidbody rb;
+    public AudioSource wolfAudio;
+
+    public float rangeOfDetection = 60.0f;
+    public float rangeForHowlTrigger = 130.0f;
+    public float rangeEndOfAmbientSound = 90.0f;
 	// Use this for initialization
 	void Start () {
-        wolfCam = GetComponent<WolfCam>();
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player");
+        animator = GetComponent<Animator>();
+        wolfAudio = GetComponent<WolfAudio>().wolfFarAudio;
     }
 	
 	// Update is called once per frame
 	void Update () {
-		if (wolfCam.visibility > 0)
+        float _playerDistance = Vector3.Distance(transform.position, player.transform.position);
+        if (wolfCam.visibility > 0 && _playerDistance < rangeOfDetection)
         {
             seePlayer = true;
             curBlindMoveTime = blindMoveTime;
@@ -39,8 +47,13 @@ public class WolfMove : MonoBehaviour {
         if (curBlindMoveTime > 0)
         {
             MoveStraightLine();
+            animator.SetBool("Run", true);
+        } else
+        {
+            animator.SetBool("Run", false);
         }
-        
+
+        player.GetComponent<PlayerAudio>().fadeAmbientSoundWithDistance(_playerDistance, rangeEndOfAmbientSound, rangeForHowlTrigger);
 	}
 
     public void MoveRandom()
@@ -51,6 +64,14 @@ public class WolfMove : MonoBehaviour {
     public void MoveStraightLine()
     {
         transform.rotation = Quaternion.LookRotation(targetPosition - transform.position);
-        rb.MovePosition(transform.position + transform.forward * Time.deltaTime);
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        {
+            transform.position = targetPosition;
+            curBlindMoveTime = 0;
+        } else
+        {
+            rb.MovePosition(transform.position + transform.forward * Time.deltaTime * runningSpeed);
+        }
+        
     }
 }

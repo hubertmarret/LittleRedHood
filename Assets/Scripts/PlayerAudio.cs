@@ -14,6 +14,9 @@ public class PlayerAudio : MonoBehaviour {
     private AudioClip[] randomNightSounds;
     [SerializeField]
     private float nightSoundProbability = 0.08f;
+    [SerializeField]
+    private AudioSource[] loopingAudioSources;
+    private float[] loopingAudioSourcesVolume;
 
     private Player player;
 
@@ -24,6 +27,11 @@ public class PlayerAudio : MonoBehaviour {
             Debug.Log("Please add the PlayerAudio object (with an audio source component) to the player and reference it here.");
         }
         player = GetComponent<Player>();
+        loopingAudioSourcesVolume = new float[loopingAudioSources.Length];
+        for (int i = 0; i < loopingAudioSources.Length; i++)
+        {
+            loopingAudioSourcesVolume[i] = loopingAudioSources[i].volume;
+        }
 	}
 	
 	// Update is called once per frame
@@ -36,7 +44,7 @@ public class PlayerAudio : MonoBehaviour {
         } 
         if (player.walking == true && playerAudio.isPlaying == true)
         {
-            playerAudio.volume = Mathf.Min(playerAudio.volume + Time.deltaTime, 0.5f);
+            playerAudio.volume = Mathf.Min(playerAudio.volume + Time.deltaTime, 0.3f);
         }
         if (player.walking == false && playerAudio.isPlaying == true)
         {
@@ -57,6 +65,37 @@ public class PlayerAudio : MonoBehaviour {
                 }
             }
         }
-	}
+
+    }
     
+
+    public void fadeAmbientSoundWithDistance(float _curDistance, float _minVolumeDistance, float _maxVolumeDistance)
+    {
+        for (int i = 0; i < loopingAudioSources.Length; i++)
+        {
+            fadeWithDistance(loopingAudioSources[i], _curDistance, _minVolumeDistance, _maxVolumeDistance, 0.0f, loopingAudioSourcesVolume[i]);
+        }
+        foreach (AudioSource audioSource in audioSources)
+        {
+            fadeWithDistance(audioSource, _curDistance, _minVolumeDistance, _maxVolumeDistance, 0.0f, 0.5f);
+        }
+    }
+
+    public void fadeWithDistance(AudioSource _audioSource, float _curDistance, float _minVolumeDistance, float _maxVolumeDistance,
+        float _minVolume, float _maxVolume)
+    {
+        _audioSource.volume = Mathf.Max(_minVolume + (_maxVolume - _minVolume) * (_curDistance - _minVolumeDistance) / (_maxVolumeDistance - _minVolumeDistance), 0.0f);
+    }
+
+    public void fadeInAmbiantSound()
+    {
+        for (int i = 0; i < loopingAudioSources.Length; i++)
+        {
+            loopingAudioSources[i].volume = Mathf.Min(loopingAudioSources[i].volume + Time.deltaTime, loopingAudioSourcesVolume[i]);
+        }
+        foreach (AudioSource audioSource in audioSources)
+        {
+            audioSource.volume = Mathf.Min(audioSource.volume + Time.deltaTime, 1.0f);
+        }
+    }
 }

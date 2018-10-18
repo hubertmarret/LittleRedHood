@@ -5,13 +5,17 @@ using UnityEngine;
 public class WolfAudio : MonoBehaviour {
 
     [SerializeField]
-    private AudioSource wolfFarAudio;
+    public AudioSource wolfFarAudio;
     [SerializeField]
-    private AudioSource wolfCloseAudio;
+    public AudioSource wolfCloseAudio;
     [SerializeField]
-    private AudioClip[] randomWolfFarSounds;
+    public AudioClip[] randomWolfFarSounds;
     [SerializeField]
-    private AudioClip[] randomWolfCloseSounds;
+    public AudioClip[] randomWolfCloseSounds;
+    [SerializeField]
+    private AudioClip onSightPlayer;
+    [SerializeField]
+    private AudioClip onChasePlayer;
     [SerializeField]
     private float wolfFarSoundProbability = 0.5f;
     [SerializeField]
@@ -20,6 +24,8 @@ public class WolfAudio : MonoBehaviour {
     private GameObject player;
     [SerializeField]
     private float distancePlayerThreshold = 40f;
+    [SerializeField]
+    private float distanceHowl = 130.0f;
 
     private float lightBaseShrinkFactor;
 
@@ -38,21 +44,30 @@ public class WolfAudio : MonoBehaviour {
         if (distancePlayer < distancePlayerThreshold)
         {
             Debug.Log("Got close");
-            PlayRandomSounds(wolfCloseAudio, randomWolfCloseSounds, wolfCloseSoundProbability);
+            PlayRandomSounds(wolfCloseAudio, randomWolfCloseSounds, wolfCloseSoundProbability, 0.95f, 1.05f);
             player.GetComponent<LanternLightManager>().lightShrinkFactor = lightBaseShrinkFactor * distancePlayerThreshold / distancePlayer;
-        } else
+        } else if (distancePlayer < distanceHowl)
         {
             Debug.Log("Got far");
             PlayRandomSounds(wolfFarAudio, randomWolfFarSounds, wolfFarSoundProbability);
         }
     }
 
-    public void PlayRandomSounds(AudioSource _audioSource, AudioClip[] _audioClips, float _probability)
+    public void PlayRandomSounds(AudioSource _audioSource, AudioClip[] _audioClips)
+    {
+        if (_audioSource.isPlaying == false)
+        {
+            _audioSource.PlayOneShot(_audioClips[Random.Range(0, _audioClips.Length)]);
+        }
+    }
+
+    public void PlayRandomSounds(AudioSource _audioSource, AudioClip[] _audioClips, float _probability, float lowPitchRange = 1.0f, float highPitchRange = 1.0f)
     {
         if (_audioSource.isPlaying == false)
         {
             if (Random.Range(0f, 1f) < _probability * Time.deltaTime)
             {
+                _audioSource.pitch = Random.Range(lowPitchRange, highPitchRange);
                 _audioSource.PlayOneShot(_audioClips[Random.Range(0, _audioClips.Length)], Random.Range(0.3f, 0.8f));
             }
         }
