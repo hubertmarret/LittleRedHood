@@ -76,6 +76,7 @@ public class Player : MonoBehaviour {
             rb.velocity = vecCam * mouvementSpeed;
 
             walking = true;
+            animator.SetBool("Walk", true);
         }
 
         if (Input.GetKeyUp("z") || Input.GetKeyUp("q") || Input.GetKeyUp("s") || Input.GetKeyUp("d"))
@@ -89,7 +90,9 @@ public class Player : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("LanternRessource"))
         {
-            gameObject.GetComponentInParent<Animator>().SetTrigger("PickingRessources");
+            walking = false;
+            animator.SetBool("Walk", false);
+            animator.SetTrigger("PickingRessources");
             PickupRessource(other.gameObject);
         }
     }
@@ -97,24 +100,24 @@ public class Player : MonoBehaviour {
     public void PickupRessource(GameObject _ressource)
     {
         Destroy(_ressource);
-        lanternLightManager.targetedLight = Mathf.Min(lanternLightManager.lightMax, lanternLightManager.targetedLight + ressourceValue);
+        lanternLightManager.RefillLight(ressourceValue);
     }
 
 
     // UPDATE
     void Update () {
 
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("PickFire"))
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("PickFire"))
+        {
+            walking = false;
+            animator.SetBool("Walk", false);
+        }
+        else
         {
             Move();
         }
-
-        // Move();
         
-        if (walking) {
-            animator.SetBool("Walk", true);
-        }
-        else
+        if (!walking)
         {
             frameCount += 1;
 

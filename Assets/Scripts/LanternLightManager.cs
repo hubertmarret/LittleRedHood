@@ -8,20 +8,50 @@ public class LanternLightManager : MonoBehaviour {
     public float lightMax = 10f;
     public float currentLight = 10f;
     public float lightExpandFactor = 10f;
-    public float targetedLight;
+    public float lightPercentToSpawn = 50;
     public new Light light;
 
-	// Use this for initialization
-	void Start () {
+    public bool spawnOrbPossible;
+
+    private float targetedLight;
+
+    // Use this for initialization
+    void Start () {
         if (light == null)
         {
             Debug.Log("Please reference the gameobject that holds the lantern light.");
         }
         currentLight = lightMax;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+        spawnOrbPossible = true;
+    }
+
+    // return the radius needed to reduce the sphere volume by a linear amount
+    float LinearSphereVolumeShrink(float radius, float delta)
+    {
+        Debug.Log(radius);
+        Debug.Log(delta);
+        Debug.Log((4 / 3) * Mathf.PI * radius * radius * radius);
+        Debug.Log(Mathf.Pow(radius * radius * radius + (3 / 4) * Mathf.PI * delta, -3f));
+        return Mathf.Pow(radius * radius * radius + (3 / (4 * Mathf.PI)) * delta, 1.0f / 3.0f);
+    }
+
+    public float GetLightPowerPercent()
+    {
+        return 100 * (currentLight / lightMax);
+    }
+
+    public void RefillLight(float ressourceValue)
+    {
+        targetedLight = Mathf.Min(lightMax, targetedLight + ressourceValue);
+        if(100 * (targetedLight / lightMax) > lightPercentToSpawn)
+        {
+            spawnOrbPossible = true;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
         if (targetedLight > currentLight)
         {
             currentLight = Mathf.Min(targetedLight, currentLight + lightExpandFactor * Time.deltaTime);
@@ -34,14 +64,4 @@ public class LanternLightManager : MonoBehaviour {
         
         light.range = currentLight;
 	}
-
-    // return the radius needed to reduce the sphere volume by a linear amount
-    float LinearSphereVolumeShrink(float radius, float delta)
-    {
-        Debug.Log(radius);
-        Debug.Log(delta);
-        Debug.Log((4 / 3) * Mathf.PI * radius * radius * radius);
-        Debug.Log(Mathf.Pow(radius * radius * radius + (3 / 4) * Mathf.PI * delta, -3f));
-        return Mathf.Pow(radius * radius * radius + (3/(4*Mathf.PI))*delta, 1.0f/3.0f);
-    }
 }
